@@ -6,6 +6,7 @@ object Form1: TForm1
   Caption = 'Scout'
   ClientHeight = 497
   ClientWidth = 596
+  Menu = MainMenu1
   Position = poDefault
   LCLVersion = '2.0.8.0'
   object PairSplitter1: TPairSplitter
@@ -29,7 +30,7 @@ object Form1: TForm1
         Top = 0
         Width = 213
         Align = alClient
-        FileSortType = fstNone
+        FileSortType = fstAlphabet
         Images = ImageList1
         ReadOnly = True
         ScrollBars = ssAutoBoth
@@ -56,12 +57,16 @@ object Form1: TForm1
         Width = 378
         Align = alClient
         Color = clDefault
+        HideSelection = False
         LargeImages = ImageList1
         ReadOnly = True
         ScrollBars = ssAutoBoth
         SmallImages = ImageList1
+        SortColumn = 0
+        SortType = stText
         StateImages = ImageList1
         TabOrder = 0
+        OnCompare = ShellListView1Compare
         OnDblClick = ShellListView1DblClick
         OnMouseDown = ShellListView1MouseDown
         OnMouseMove = ShellListView1MouseMove
@@ -180,5 +185,24 @@ object Form1: TForm1
       18331F1B18331F1B18331F1B18331F1B18331F1B18331F1B18331F1B18331F1B
       183312100E1E0000000000000000
     }
+  end
+  object MainMenu1: TMainMenu
+    left = 266
+    top = 125
+    object ViewMenu: TMenuItem
+      Caption = '&Ansicht'
+      object ShowHiddenItem: TMenuItem
+        Action = ShowHidden
+        ShowAlwaysCheckable = True
+      end
+    end
+  end
+  object ActionList1: TActionList
+    left = 250
+    top = 55
+    object ShowHidden: TAction
+      Caption = '&Versteckte Dateien anzeigen'
+      OnExecute = ShowHiddenExecute
+    end
   end
 end

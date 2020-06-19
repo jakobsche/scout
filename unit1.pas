@@ -6,20 +6,27 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, PairSplitter,
-  ShellCtrls, ComCtrls;
+  ShellCtrls, ComCtrls, Menus, ActnList;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    ShowHidden: TAction;
+    ActionList1: TActionList;
     ImageList1: TImageList;
+    MainMenu1: TMainMenu;
+    ShowHiddenItem: TMenuItem;
+    ViewMenu: TMenuItem;
     PairSplitter1: TPairSplitter;
     PairSplitterSide1: TPairSplitterSide;
     PairSplitterSide2: TPairSplitterSide;
     ShellListView1: TShellListView;
     ShellTreeView1: TShellTreeView;
     StatusBar1: TStatusBar;
+    procedure ShellListView1Compare(Sender: TObject; Item1, Item2: TListItem;
+      Data: Integer; var Compare: Integer);
     procedure ShellListView1DblClick(Sender: TObject);
     procedure ShellListView1FileAdded(Sender: TObject; Item: TListItem);
     procedure ShellListView1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -27,6 +34,7 @@ type
     procedure ShellListView1MouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure ShellTreeView1GetImageIndex(Sender: TObject; Node: TTreeNode);
+    procedure ShowHiddenExecute(Sender: TObject);
   private
 
   public
@@ -34,6 +42,7 @@ type
     function IsDirectory(Path: string): Boolean; overload;
     function IsDirectory(Item: TListItem): Boolean; overload;
     function IsDirectory(Item: TTreeNode): Boolean; overload;
+    procedure SetListViewPos(X, Y: Integer);
   end;
 
 var
@@ -51,7 +60,7 @@ function TForm1.IsDirectory(Path: string): Boolean;
 var
   S: TSearchRec;
 begin
-  if FindFirst(Path, faDirectory, S) = 0 then Result := S.Attr and faDirectory = faDirectory
+  if FindFirst(Path, faDirectory or faHidden, S) = 0 then Result := S.Attr and faDirectory = faDirectory
   else Result := False;
   FindClose(S)
 end;
@@ -99,20 +108,47 @@ begin
     end;
 end;
 
+procedure TForm1.ShellListView1Compare(Sender: TObject; Item1,
+  Item2: TListItem; Data: Integer; var Compare: Integer);
+
+procedure CompareCaption;
+begin
+  if LowerCase(Item1.Caption) < LowerCase(Item2.Caption) then Compare := -1
+  else if LowerCase(Item1.Caption) > LowerCase(Item2.Caption) then Compare := 1
+  {else Compare := 0}
+end;
+
+begin
+  if IsDirectory(Item1) and not IsDirectory(Item2) then Compare := -1
+  else if not IsDirectory(Item1) and IsDirectory(Item2) then Compare := 1
+  else if IsDirectory(Item1) and IsDirectory(Item2) then CompareCaption
+  else CompareCaption
+end;
+
 procedure TForm1.ShellListView1FileAdded(Sender: TObject; Item: TListItem);
 begin
-  if IsDirectory(Item) then Item.ImageIndex := 1
+  if (Sender as TShellListView).ShellTreeView.Selected = nil then Exit;
+  if IsDirectory(Item) then
+    if (Sender as TShellListView).ShellTreeView.Selected.Text = 'Volumes' then
+      Item.ImageIndex := 0
+    else
+      Item.ImageIndex := 1
   else Item.ImageIndex := 2;
 end;
 
 procedure TForm1.ShellListView1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-
+  SetListViewPos(X, Y)
 end;
 
 procedure TForm1.ShellListView1MouseMove(Sender: TObject; Shift: TShiftState;
   X, Y: Integer);
+begin
+  SetListViewPos(X, Y);
+end;
+
+procedure TForm1.SetListViewPos(X, Y: Integer);
 begin
   ListViewPos := Point(X, Y - 28); {Höhe des Tabellenkopfs abziehen}
   StatusBar1.SimpleText := Format('(%d, %d)', [X, Y])
@@ -127,6 +163,25 @@ begin
   end;
   if Node.Parent.Text = 'Volumes' then Node.ImageIndex := 0
   else Node.ImageIndex := 1
+end;
+
+procedure TForm1.ShowHiddenExecute(Sender: TObject);
+begin
+  with Sender as TAction do begin
+    Checked := not Checked;
+    if Checked then begin
+      ShellTreeView1.ShellListView := nil;
+      ShellTreeView1.ObjectTypes := ShellTreeView1.ObjectTypes + [otHidden];
+      ShellListView1.ObjectTypes := ShellListView1.ObjectTypes + [otHidden];
+      ShellTreeView1.ShellListView := ShellListView1;
+    end
+    else begin
+      ShellTreeView1.ShellListView := nil;
+      ShellTreeView1.ObjectTypes := ShellTreeView1.ObjectTypes - [otHidden];
+      ShellListView1.ObjectTypes := ShellListView1.ObjectTypes - [otHidden];
+      ShellTreeView1.ShellListView := ShellListView1;
+    end;
+  end;
 end;
 
 end.

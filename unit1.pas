@@ -6,13 +6,34 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, PairSplitter,
-  ShellCtrls, ComCtrls, Menus, ActnList;
+  ShellCtrls, ComCtrls, Menus, ActnList, StdActns;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    HelpAbout: TAction;
+    FileExit1: TFileExit;
+    MenuItem1: TMenuItem;
+    MenuItem10: TMenuItem;
+    MenuItem12: TMenuItem;
+    MenuItem13: TMenuItem;
+    MenuItem14: TMenuItem;
+    MenuItem15: TMenuItem;
+    MenuItem16: TMenuItem;
+    MenuItem17: TMenuItem;
+    MenuItem18: TMenuItem;
+    MenuItem19: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem20: TMenuItem;
+    MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
+    MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
+    MenuItem8: TMenuItem;
+    MenuItem9: TMenuItem;
     ShowHidden: TAction;
     ActionList1: TActionList;
     ImageList1: TImageList;
@@ -25,6 +46,7 @@ type
     ShellListView1: TShellListView;
     ShellTreeView1: TShellTreeView;
     StatusBar1: TStatusBar;
+    procedure HelpAboutExecute(Sender: TObject);
     procedure ShellListView1Compare(Sender: TObject; Item1, Item2: TListItem;
       Data: Integer; var Compare: Integer);
     procedure ShellListView1DblClick(Sender: TObject);
@@ -50,7 +72,7 @@ var
 
 implementation
 
-uses LCLIntf, Patch;
+uses LCLIntf, Patch, About;
 
 {$R *.lfm}
 
@@ -60,7 +82,8 @@ function TForm1.IsDirectory(Path: string): Boolean;
 var
   S: TSearchRec;
 begin
-  if FindFirst(Path, faDirectory or faHidden, S) = 0 then Result := S.Attr and faDirectory = faDirectory
+  if FindFirst(Path, faDirectory or faHidden, S) = 0 then
+    Result := S.Attr and faDirectory = faDirectory
   else Result := False;
   FindClose(S)
 end;
@@ -123,6 +146,11 @@ begin
   else if not IsDirectory(Item1) and IsDirectory(Item2) then Compare := 1
   else if IsDirectory(Item1) and IsDirectory(Item2) then CompareCaption
   else CompareCaption
+end;
+
+procedure TForm1.HelpAboutExecute(Sender: TObject);
+begin
+  AboutBox.ShowModal
 end;
 
 procedure TForm1.ShellListView1FileAdded(Sender: TObject; Item: TListItem);

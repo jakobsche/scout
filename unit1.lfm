@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 680
+  Left = 801
   Height = 497
-  Top = 215
+  Top = 278
   Width = 596
   Caption = 'Scout'
   ClientHeight = 497
@@ -189,11 +189,69 @@ object Form1: TForm1
   object MainMenu1: TMainMenu
     left = 266
     top = 125
+    object MenuItem1: TMenuItem
+      Caption = '&Datei'
+      object MenuItem2: TMenuItem
+        Caption = '&Neu'
+      end
+      object MenuItem3: TMenuItem
+        Caption = 'Öffnen ...'
+      end
+      object MenuItem4: TMenuItem
+        Caption = '&Speichern'
+      end
+      object MenuItem5: TMenuItem
+        Caption = 'Speichern unter'
+      end
+      object MenuItem6: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem7: TMenuItem
+        Caption = '&Drucken'
+      end
+      object MenuItem8: TMenuItem
+        Caption = 'D&rucker einrichten ...'
+      end
+      object MenuItem9: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem10: TMenuItem
+        Action = FileExit1
+      end
+    end
     object ViewMenu: TMenuItem
       Caption = '&Ansicht'
       object ShowHiddenItem: TMenuItem
         Action = ShowHidden
         ShowAlwaysCheckable = True
+      end
+    end
+    object MenuItem12: TMenuItem
+      Caption = '&Hilfe'
+      object MenuItem13: TMenuItem
+        Caption = 'Hilfeinhalte'
+        ShortCut = 112
+      end
+      object MenuItem14: TMenuItem
+        Caption = 'Hilfe-&Index'
+      end
+      object MenuItem15: TMenuItem
+        Caption = '&Onlinehilfe'
+      end
+      object MenuItem16: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem17: TMenuItem
+        Caption = '&Lizenzinformation'
+      end
+      object MenuItem18: TMenuItem
+        Caption = 'Na&ch Updates suchen'
+      end
+      object MenuItem19: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem20: TMenuItem
+        Action = HelpAbout
       end
     end
   end
@@ -203,6 +261,16 @@ object Form1: TForm1
     object ShowHidden: TAction
       Caption = '&Versteckte Dateien anzeigen'
       OnExecute = ShowHiddenExecute
+    end
+    object FileExit1: TFileExit
+      Category = 'File'
+      Caption = '&Beenden'
+      Hint = 'Beenden'
+    end
+    object HelpAbout: TAction
+      Category = '(Unknown)'
+      Caption = 'Ü&ber ...'
+      OnExecute = HelpAboutExecute
     end
   end
 end

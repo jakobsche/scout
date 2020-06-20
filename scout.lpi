@@ -21,6 +21,7 @@
       <Version Value="2"/>
       <DestinationDirectory Value="/Users/andreas/Lazarus/scout/deploy/src"/>
       <UseFileFilters Value="True"/>
+      <FileFilter Value="*.(pas|pp|inc|lpr|lfm|lrs|lpi|lpk|xml|sh|md)|LICENSE"/>
     </PublishOptions>
     <RunParams>
       <FormatVersion Value="2"/>

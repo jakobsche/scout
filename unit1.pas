@@ -83,7 +83,7 @@ var
   S: TSearchRec;
 begin
   if FindFirst(Path, faDirectory or faHidden, S) = 0 then
-    Result := S.Attr and faDirectory = faDirectory
+    Result := S.Attr and faDirectory <> 0
   else Result := False;
   FindClose(S)
 end;

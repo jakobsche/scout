@@ -46,7 +46,10 @@ type
     ShellListView1: TShellListView;
     ShellTreeView1: TShellTreeView;
     StatusBar1: TStatusBar;
+    procedure FormCreate(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
+    procedure ShellListView1Change(Sender: TObject; Item: TListItem;
+      Change: TItemChange);
     procedure ShellListView1Compare(Sender: TObject; Item1, Item2: TListItem;
       Data: Integer; var Compare: Integer);
     procedure ShellListView1DblClick(Sender: TObject);
@@ -65,6 +68,7 @@ type
     function IsDirectory(Item: TListItem): Boolean; overload;
     function IsDirectory(Item: TTreeNode): Boolean; overload;
     procedure SetListViewPos(X, Y: Integer);
+    procedure AppExceptionHandler(Sender: TObject; AnException: Exception);
   end;
 
 var
@@ -153,40 +157,70 @@ begin
   AboutBox.ShowModal
 end;
 
+procedure TForm1.ShellListView1Change(Sender: TObject; Item: TListItem;
+  Change: TItemChange);
+begin
+
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  Application.OnException := @AppExceptionHandler;
+end;
+
 procedure TForm1.ShellListView1FileAdded(Sender: TObject; Item: TListItem);
 begin
   if (Sender as TShellListView).ShellTreeView.Selected = nil then Exit;
   if IsDirectory(Item) then
+  {$ifdef darwin}
     if (Sender as TShellListView).ShellTreeView.Selected.Text = 'Volumes' then
       Item.ImageIndex := 0
     else
+  {$else}
       Item.ImageIndex := 1
+  {$endif}
   else Item.ImageIndex := 2;
 end;
 
 procedure TForm1.ShellListView1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
+  (Sender as TWinControl).SetFocus;
   SetListViewPos(X, Y)
 end;
 
 procedure TForm1.ShellListView1MouseMove(Sender: TObject; Shift: TShiftState;
   X, Y: Integer);
 begin
+  (Sender as TWinControl).SetFocus;
   SetListViewPos(X, Y);
 end;
 
 procedure TForm1.SetListViewPos(X, Y: Integer);
 begin
-  ListViewPos := Point(X, Y - 28); {Höhe des Tabellenkopfs abziehen}
+{$ifdef darwin}
+  ListViewPos := Point(X, Y - 24); {Höhe des Tabellenkopfs abziehen}
+{$else}
+  ListViewPos := Point(X, Y);
+{$endif}
   StatusBar1.SimpleText := Format('(%d, %d)', [X, Y])
+end;
+
+procedure TForm1.AppExceptionHandler(Sender: TObject; AnException: Exception);
+begin
+  if AnException is EInvalidPath then ShowMessageFmt('"%s" ist ungültig', [ShellTreeView1.Selected.GetTextPath])
+  else ShowMessage(AnException.ClassName)
 end;
 
 procedure TForm1.ShellTreeView1GetImageIndex(Sender: TObject; Node: TTreeNode);
 begin
   if Node = nil then Exit;
   if Node.Parent = nil then begin
+  {$ifdef windows}
+    Node.ImageIndex := 0;
+  {$else}
     Node.ImageIndex := 1;
+  {$endif}
     Exit
   end;
   if Node.Parent.Text = 'Volumes' then Node.ImageIndex := 0

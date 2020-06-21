@@ -4,15 +4,15 @@ object Form1: TForm1
   Top = 235
   Width = 596
   Caption = 'Scout'
-  ClientHeight = 478
+  ClientHeight = 497
   ClientWidth = 596
   Menu = MainMenu1
   OnCreate = FormCreate
   Position = poDefault
-  LCLVersion = '2.0.6.0'
+  LCLVersion = '2.0.8.0'
   object PairSplitter1: TPairSplitter
     Left = 0
-    Height = 458
+    Height = 479
     Top = 0
     Width = 596
     Align = alClient
@@ -20,14 +20,14 @@ object Form1: TForm1
     object PairSplitterSide1: TPairSplitterSide
       Cursor = crArrow
       Left = 0
-      Height = 458
+      Height = 479
       Top = 0
       Width = 213
       ClientWidth = 213
-      ClientHeight = 458
+      ClientHeight = 479
       object ShellTreeView1: TShellTreeView
         Left = 0
-        Height = 458
+        Height = 479
         Top = 0
         Width = 213
         Align = alClient
@@ -45,14 +45,14 @@ object Form1: TForm1
     object PairSplitterSide2: TPairSplitterSide
       Cursor = crArrow
       Left = 218
-      Height = 458
+      Height = 479
       Top = 0
       Width = 378
       ClientWidth = 378
-      ClientHeight = 458
+      ClientHeight = 479
       object ShellListView1: TShellListView
         Left = 0
-        Height = 458
+        Height = 479
         Top = 0
         Width = 378
         Align = alClient
@@ -78,8 +78,8 @@ object Form1: TForm1
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 20
-    Top = 458
+    Height = 18
+    Top = 479
     Width = 596
     Panels = <>
   end

@@ -176,6 +176,7 @@ begin
     if (Sender as TShellListView).ShellTreeView.Selected.Text = 'Volumes' then
       Item.ImageIndex := 0
     else
+      Item.ImageIndex := 1
   {$else}
       Item.ImageIndex := 1
   {$endif}
@@ -215,6 +216,11 @@ end;
 procedure TForm1.ShellTreeView1GetImageIndex(Sender: TObject; Node: TTreeNode);
 begin
   if Node = nil then Exit;
+{$ifdef darwin}
+  if Node.Parent = nil then Exit;
+  if Node.Parent.Text = 'Volumes' then Node.ImageIndex := 0
+  else Node.ImageIndex := 1
+{$else}
   if Node.Parent = nil then begin
   {$ifdef windows}
     Node.ImageIndex := 0;
@@ -223,8 +229,7 @@ begin
   {$endif}
     Exit
   end;
-  if Node.Parent.Text = 'Volumes' then Node.ImageIndex := 0
-  else Node.ImageIndex := 1
+{$endif}
 end;
 
 procedure TForm1.ShowHiddenExecute(Sender: TObject);

@@ -42,8 +42,9 @@ end;
 
 procedure TAboutBox.BitBtn2Click(Sender: TObject);
 begin
-  OpenDocument('mailto:jakobschea@aim.com'{?subject="Betrifft Scout"'})
-    {funktioniert nicht mit Parametern}
+  OpenURL('mailto:jakobschea@aim.com'{?subject="Betrifft Scout"'})
+    {funktioniert nicht mit Parametern (auch OpenDocument)}
+    {OpenDocument funktioniert nicht mit Linux}
 end;
 
 procedure TAboutBox.Label1Click(Sender: TObject);

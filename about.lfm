@@ -7,10 +7,10 @@ object AboutBox: TAboutBox
   ClientHeight = 294
   ClientWidth = 377
   Position = poScreenCenter
-  LCLVersion = '2.0.8.0'
+  LCLVersion = '2.0.6.0'
   object Label1: TLabel
     Left = 4
-    Height = 144
+    Height = 104
     Top = 4
     Width = 369
     Align = alTop

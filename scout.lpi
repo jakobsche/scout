@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <General>
+      <Flags>
+        <CompatibilityMode Value="True"/>
+      </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <MainUnit Value="0"/>
       <Title Value="Scout"/>
       <Scaled Value="True"/>
       <ResourceType Value="res"/>
@@ -19,7 +21,7 @@
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
-      <DestinationDirectory Value="/Users/andreas/Lazarus/scout/deploy/src"/>
+      <DestinationDirectory Value="$(ProjPath)/deploy/src"/>
       <UseFileFilters Value="True"/>
       <FileFilter Value="*.(pas|pp|inc|lpr|lfm|lrs|lpi|lpk|xml|sh|md)|LICENSE"/>
     </PublishOptions>
